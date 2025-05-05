@@ -1,0 +1,33 @@
+name: Check Code Style
+
+on:
+  push:
+    branches:
+      - 'feature/**'
+  pull_request:
+    branches:
+      - 'feature/**'
+
+jobs:
+  Format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
+        with:
+          php-version: "8.2"
+
+      - uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: |
+          cd src
+          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Run Laravel Pint
+        id: run_pint
+        run: |
+          if ! src/vendor/bin/pint --config src/pint.json --test; then
+            echo "Formatting failed. Please run Laravel Pint to fix the code style."
+            exit 1
+          fi
