@@ -399,7 +399,33 @@ trait Loggable
 
 ---
 
-## 📌 14. Helpers
+## 📌 14. Enum
+
+**Location**: `app/Enums/{UserRole}.php`
+
+### ✅ Rule:
+Use enums to represent a fixed set of related constants with meaningful names and optional methods.
+
+### 📘 Example:
+```php
+namespace App\Enums;
+
+enum UserRole: string
+{
+    case ADMIN = 'admin';
+    case EDITOR = 'editor';
+    case VIEWER = 'viewer';
+
+    public const LABELS = [
+        self::ADMIN => 'Administrator',
+        self::EDITOR => 'Content Editor',
+        self::VIEWER => 'Read-Only User',
+    ];
+}
+
+```
+
+## 📌 15. Helpers
 
 **Location**: `app/helpers.php`
 
@@ -416,7 +442,7 @@ function formatDate($date)
 
 ---
 
-## 📌 15. Assets (CSS / JS / Images)
+## 📌 16. Assets (CSS / JS / Images)
 
 **Location**: `public/css/`, `public/js/`, `public/img/`
 
@@ -426,7 +452,7 @@ function formatDate($date)
 
 ---
 
-## 📌 16. Layouts
+## 📌 17. Layouts
 
 **Location**: `resources/views/front/layouts/`
 
@@ -441,7 +467,7 @@ function formatDate($date)
 
 ---
 
-## 📌 17. Includes (Partials)
+## 📌 18. Includes (Partials)
 
 **Location**: `resources/views/front/includes/`
 
@@ -450,7 +476,7 @@ function formatDate($date)
 
 ---
 
-## 📌 18. Page Views
+## 📌 19. Page Views
 
 **Location**: `resources/views/front/{ControllerName}/`
 
