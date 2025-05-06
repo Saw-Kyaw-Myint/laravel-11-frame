@@ -50,7 +50,7 @@ public function store(Request $request) {
 ```
 
 
-## 📌 3. Service
+## 📌 4. Service
 
 **Location**: `app/Service/CustomService`
 
@@ -78,7 +78,7 @@ public function store(UserRequest $request) {
 ---
 
 
-## 📌 3. BaseService
+## 📌 5. BaseService
 
 **Location**: `app/Service/CustomService`
 
@@ -117,7 +117,7 @@ class UserService extends BaseService {
 
 
 
-## 📌  Repository
+## 📌 6.  Repository
 
 **Location**: `app/Repository/CustomRepository`
 
@@ -163,15 +163,62 @@ class UserService {
 
 
 
+## 📌 7. BaseRepository
+
+**Location**: `app/Repository/BaseRepository`
+
+### ✅ Rule:
+The BaseRepository should contain common database queries or methods that are shared across all repository classes. 
+
+### ❌ Avoid:
+```php
+// ❌ Wrong: Repeating common database queries in multiple repositories
+public function getAllUsers() {
+    return User::where('status', 'active')->get(); // Same query repeated in multiple repositories
+}
+
+public function getAllOrders() {
+    return Order::where('status', 'completed')->get(); // Same query repeated again
+}
+```
+
+### ✅ Recommended:
+```php
+// ✅ Correct: Common queries in BaseRepository
+class BaseRepository {
+    public function getActiveRecords($model) {
+        return $model::where('status', 'active')->get();
+    }
+
+    public function getCompletedOrders($model) {
+        return $model::where('status', 'completed')->get();
+    }
+}
+
+class UserRepository extends BaseRepository {
+    public function getActiveUsers() {
+        return $this->getActiveRecords(User::class); // Reuse common query from BaseRepository
+    }
+}
+
+class OrderRepository extends BaseRepository {
+    public function getCompletedOrders() {
+        return $this->getCompletedOrders(Order::class); // Reuse common query from BaseRepository
+    }
+}
+```
 
 
 
-## 📌  RepositoryInterface
+
+
+
+## 📌 8. RepositoryInterface
 
 **Location**: `app/Repository/RepositoryInterface.php`
 
 ### ✅ Rule:
-The RepositoryInterface should define the methods that all repositories must implement. 
+The RepositoryInterface should define the methods that  BaseRepositories must implement. 
 
 ### ❌ Avoid:
 ```php
@@ -250,58 +297,10 @@ class OrderRepository implements RepositoryInterface {
 ```
 
 
-
-
-
-## 📌  BaseRepository
-
-**Location**: `app/Repository/BaseRepository`
-
-### ✅ Rule:
-The BaseRepository should contain common database queries or methods that are shared across all repository classes. 
-
-### ❌ Avoid:
-```php
-// ❌ Wrong: Repeating common database queries in multiple repositories
-public function getAllUsers() {
-    return User::where('status', 'active')->get(); // Same query repeated in multiple repositories
-}
-
-public function getAllOrders() {
-    return Order::where('status', 'completed')->get(); // Same query repeated again
-}
-```
-
-### ✅ Recommended:
-```php
-// ✅ Correct: Common queries in BaseRepository
-class BaseRepository {
-    public function getActiveRecords($model) {
-        return $model::where('status', 'active')->get();
-    }
-
-    public function getCompletedOrders($model) {
-        return $model::where('status', 'completed')->get();
-    }
-}
-
-class UserRepository extends BaseRepository {
-    public function getActiveUsers() {
-        return $this->getActiveRecords(User::class); // Reuse common query from BaseRepository
-    }
-}
-
-class OrderRepository extends BaseRepository {
-    public function getCompletedOrders() {
-        return $this->getCompletedOrders(Order::class); // Reuse common query from BaseRepository
-    }
-}
-```
-
 ---
 
 
-## 📌 4. Form Requests
+## 📌 9. Form Requests
 
 **Location**: `app/Http/Requests/Front/` or `Admin/`
 
@@ -324,7 +323,7 @@ class RegisterRequest extends FormRequest
 
 ---
 
-## 📌 5. Custom Validation
+## 📌 10. Custom Validation
 
 **Location**: `app/Http/Requests/Rules/CustomValidator.php`
 
@@ -338,7 +337,7 @@ public static function isKatakana($attribute, $value, $parameters, $validator)
 
 ---
 
-## 📌 6. Library Classes
+## 📌 11. Library Classes
 
 **Location**: `app/Libs/`
 
@@ -360,7 +359,7 @@ class DiscountService
 
 ---
 
-## 📌 7. Models
+## 📌 12. Models
 
 **Location**: `app/Models/`
 
@@ -380,7 +379,7 @@ class User extends Model
 
 ---
 
-## 📌 8. Traits
+## 📌 13. Traits
 
 **Location**: `app/Traits/`
 
@@ -400,7 +399,7 @@ trait Loggable
 
 ---
 
-## 📌 9. Helpers
+## 📌 14. Helpers
 
 **Location**: `app/helpers.php`
 
@@ -417,7 +416,7 @@ function formatDate($date)
 
 ---
 
-## 📌 10. Assets (CSS / JS / Images)
+## 📌 15. Assets (CSS / JS / Images)
 
 **Location**: `public/css/`, `public/js/`, `public/img/`
 
@@ -427,7 +426,7 @@ function formatDate($date)
 
 ---
 
-## 📌 11. Layouts
+## 📌 16. Layouts
 
 **Location**: `resources/views/front/layouts/`
 
@@ -442,7 +441,7 @@ function formatDate($date)
 
 ---
 
-## 📌 12. Includes (Partials)
+## 📌 17. Includes (Partials)
 
 **Location**: `resources/views/front/includes/`
 
@@ -451,7 +450,7 @@ function formatDate($date)
 
 ---
 
-## 📌 13. Page Views
+## 📌 18. Page Views
 
 **Location**: `resources/views/front/{ControllerName}/`
 
