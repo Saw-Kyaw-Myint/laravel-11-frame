@@ -52,7 +52,7 @@ docker-compose run --rm npm install
 Create a copy of the .env file::
 
 ```
-cp .env.example .env
+cp src/.env.example src/.env
 ```
 
 Generate an application key:
