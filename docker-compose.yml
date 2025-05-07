@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+  app:
+    ports:
+      - 80:80
+    build: ./docker/app
+    container_name: azukel_api_4
+    volumes:
+      - ./src:/var/www/html
+
+  db:
+    image: mysql:8.0
+    container_name: azukel_api_db_4
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: azukel_api_db
+      MYSQL_USER: azukel_user
+      MYSQL_PASSWORD: techinside
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./docker/db/data:/var/lib/mysql
+      - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+    ports:
+      - 3307:3306
+    platform: linux/amd64
+
+  # phpMyAdmin
+  phpmyadmin:
+    container_name: azukel_api_db_phpmyadmin_4
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - db
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOSTS=db
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+      - UPLOAD_LIMIT=2G
+      - MEMORY_LIMIT=2G
+    ports:
+      - 8083:80
