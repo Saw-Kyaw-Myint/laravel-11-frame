@@ -5,18 +5,18 @@ services:
     ports:
       - 80:80
     build: ./docker/app
-    container_name: azukel_api_4
+    container_name: azukel_api
     volumes:
       - ./src:/var/www/html
 
   db:
     image: mysql:8.0
-    container_name: azukel_api_db_4
+    container_name: azukel_api_db
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: azukel_api_db
       MYSQL_USER: azukel_user
-      MYSQL_PASSWORD: techinside
+      MYSQL_PASSWORD: root
       TZ: 'Asia/Tokyo'
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
@@ -28,7 +28,7 @@ services:
 
   # phpMyAdmin
   phpmyadmin:
-    container_name: azukel_api_db_phpmyadmin_4
+    container_name: azukel_api_db_phpmyadmin
     image: phpmyadmin/phpmyadmin
     depends_on:
       - db
