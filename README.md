@@ -5,31 +5,45 @@ Before getting started, ensure that you have the following installed on your sys
 - MySQL or PostgreSQL
 - Web server (e.g. Apache or Nginx)
 
-Clone the repository:
-
-```
-git clone https://github.com/Saw-Kyaw-Myint/laravel-11-frame.git
-```
-
 Change into the project directory:
 
 ```
-cd laravel-11-frame/src
+cd laravel-11-frame/
 ```
 
-Setup formatter to format before commit:
+Build the Docker images:
 
 ```
-cp pre-commit .git/hooks/pre-commit
+docker-compose build:
+```
+
+Enter to the web container:
+```
+docker-compose exec app bash
 ```
 
 Install PHP dependencies:
-
 ```
 composer install
 ```
 
-Run Devlopment Server
+Generate an application key:
 ```
-php artisan serve
+php artisan key:generate
+```
+
+Change Permission:
+```
+chmod -R 777 bootstrap/cache	
+chmod -R 777 storage/	
+```
+
+App Url:
+```
+http://localhost
+```
+
+DB Url:
+```
+http://localhost:8083
 ```
