@@ -14,7 +14,7 @@ cd laravel-11-frame/
 Build the Docker images:
 
 ```
-docker-compose build:
+docker-compose build
 ```
 
 Enter to the web container:
