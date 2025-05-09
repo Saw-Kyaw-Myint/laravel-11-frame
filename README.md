@@ -28,6 +28,11 @@ Enter to the web container:
 docker-compose exec app bash
 ```
 
+Copy .env:
+```
+cp .env.example .env
+```
+
 Install PHP dependencies:
 ```
 composer install

@@ -39,3 +39,6 @@ services:
       - MEMORY_LIMIT=2G
     ports:
       - 8083:80
+
+volumes:
+  db-data: {}
