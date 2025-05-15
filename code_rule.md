@@ -95,22 +95,40 @@ public function createWithScore(array $data) {
 }
 ```
 
-### ✅ Recommended:
+
+## 📌 5. ServiceInterface
+
+**Location**: `app/Contracts/Services/CustomServiceInterface`
+
+### ✅ Rule:
+The ServerInterface should define the contract for Service.
+
+### ❌ Avoid:
 ```php
-// ✅ Correct: Reusable logic in BaseService
-class BaseService {
-    public function calculateScore(User $user) {
-        // Common logic for calculating score
-        $user->score = $user->score + 10; // Example logic
-        return $user;
+// ❌ Wrong: Hardcoding server logic directly inside services or controllers
+
+class PaymentService {
+    public function sendPaymentRequest(array $payload) {
+        $response = Http::post('https://external.api/payment', $payload); // Direct API call
+        return $response->json();
     }
 }
+```
 
-class UserService extends BaseService {
-    public function createWithScore(array $data) {
-        $user = new User($data);
-        $this->calculateScore($user); // Reuse logic from BaseService
-        $user->save();
+### ✅ Recommended:
+```php
+ Correct: Define contract in ServerInterface, implement in PaymentServer
+
+// app/Interfaces/ServerInterface.php
+interface ServerInterface {
+    public function sendRequest(array $payload): array;
+}
+
+// app/Servers/PaymentServer.php
+class PaymentServer implements ServerInterface {
+    public function sendRequest(array $payload): array {
+        $response = Http::post('https://external.api/payment', $payload);
+        return $response->json();
     }
 }
 ```
@@ -182,40 +200,10 @@ public function getAllOrders() {
 }
 ```
 
-### ✅ Recommended:
-```php
-// ✅ Correct: Common queries in BaseRepository
-class BaseRepository {
-    public function getActiveRecords($model) {
-        return $model::where('status', 'active')->get();
-    }
-
-    public function getCompletedOrders($model) {
-        return $model::where('status', 'completed')->get();
-    }
-}
-
-class UserRepository extends BaseRepository {
-    public function getActiveUsers() {
-        return $this->getActiveRecords(User::class); // Reuse common query from BaseRepository
-    }
-}
-
-class OrderRepository extends BaseRepository {
-    public function getCompletedOrders() {
-        return $this->getCompletedOrders(Order::class); // Reuse common query from BaseRepository
-    }
-}
-```
-
-
-
-
-
 
 ## 📌 8. RepositoryInterface
 
-**Location**: `app/Repository/RepositoryInterface.php`
+**Location**: `app/Contracts/Repositories/RepositoryInterface.php`
 
 ### ✅ Rule:
 The RepositoryInterface should define the methods that  BaseRepositories must implement. 
@@ -297,6 +285,40 @@ class OrderRepository implements RepositoryInterface {
 ```
 
 
+## 📌 7. Resource
+
+**Location**: `app/Http/Resources/`
+
+### ✅ Rule:
+API Resources should be used to transform and format Eloquent models or collections into clean, consistent JSON responses. They act as a presentation layer between your backend data and frontend consumers (like mobile apps or SPAs). 
+
+### ❌ Avoid:
+```php
+// ❌ Wrong: Returning raw Eloquent models or arrays directly in controllers
+
+public function show($id) {
+    $user = User::findOrFail($id);
+    return response()->json($user); // No control over data shape
+}
+```
+
+✅ Recommended:
+// ✅ Correct: Use API Resource to control and format output
+```php
+// app/Http/Resources/UserResource.php
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class UserResource extends JsonResource {
+    public function toArray($request): array {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+            'joined_at' => $this->created_at->format('Y-m-d'),
+        ];
+    }
+}
+```
 ---
 
 
