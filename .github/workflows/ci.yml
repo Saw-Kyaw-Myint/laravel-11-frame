@@ -29,13 +29,8 @@ jobs:
 
       - name: Get Composer Cache Directory
         id: composer-cache
-        working-directory: src
         run: |
-          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
+          cd src
           echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
       - uses: actions/cache@v4
         with:
