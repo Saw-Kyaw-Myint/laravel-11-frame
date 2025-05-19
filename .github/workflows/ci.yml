@@ -19,6 +19,8 @@ on:
 jobs:
   code_quality:
     runs-on: ubuntu-latest
+    env:
+      MEMORY_LIMIT: 5G          # <--- ဒီမှာ constant variable declare လုပ်လိုက်တာပါ
     steps:
       - name: Setup PHP Environment
         uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
@@ -57,9 +59,7 @@ jobs:
         id: run_larastan
         run: |
           cd src
-          if ! php -d memory_limit=5G vendor/bin/phpstan analyse --no-progress app; then
+          if ! php -d memory_limit=${{ env.MEMORY_LIMIT }} vendor/bin/phpstan analyse --no-progress app; then
             echo "❌ Larastan detected issues. Please run larastan before committing."
             exit 1
           fi
-      - name: Show Cache Key
-        run: echo "Cache key: ${{ runner.os }}-composer-${{ hashFiles('src/composer.lock') }}" 
