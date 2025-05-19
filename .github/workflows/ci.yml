@@ -1,3 +1,13 @@
+name: Check Code
+
+on:
+  push:
+    branches:
+      - 'feat/**'
+  pull_request:
+    branches:
+      - 'feat/**'
+
 jobs:
   code_quality:
     runs-on: ubuntu-latest
@@ -22,11 +32,10 @@ jobs:
             echo "❌ Formatting failed. Please run Laravel Pint to fix the code style."
             exit 1
           fi
-
       - name: Run Larastan
         id: run_larastan
         run: |
-          cd src
+
           if ! php -d memory_limit=5G vendor/bin/phpstan analyse --no-progress app; then
             echo "❌ Larastan detected issues. Please run larastan before committing."
             exit 1
