@@ -20,7 +20,9 @@ jobs:
   code_quality:
     runs-on: ubuntu-latest
     env:
-      MEMORY_LIMIT: 5G          # <--- ဒီမှာ constant variable declare လုပ်လိုက်တာပါ
+      MEMORY_LIMIT: 5G
+      PHPSTAN: vendor/bin/phpstan
+      LARAVELPINT: vendor/bin/pint        # <--- ဒီမှာ constant variable declare လုပ်လိုက်တာပါ
     steps:
       - name: Setup PHP Environment
         uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
@@ -50,7 +52,7 @@ jobs:
         id: run_pint
         run: |
           cd src
-          if ! vendor/bin/pint --config pint.json --test; then
+          if ! $LARAVELPINT --config pint.json --test; then
             echo "❌ Formatting failed. Please run Laravel Pint to fix the code style."
             exit 1
           fi
@@ -59,7 +61,7 @@ jobs:
         id: run_larastan
         run: |
           cd src
-          if ! php -d memory_limit=${{ env.MEMORY_LIMIT }} vendor/bin/phpstan analyse --no-progress app; then
+          if ! php -d memory_limit=${{ env.MEMORY_LIMIT || 5G }}  $PHPSTAN analyse --no-progress app; then
             echo "❌ Larastan detected issues. Please run larastan before committing."
             exit 1
           fi
