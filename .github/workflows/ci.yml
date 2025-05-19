@@ -61,3 +61,5 @@ jobs:
             echo "❌ Larastan detected issues. Please run larastan before committing."
             exit 1
           fi
+      - name: Show Cache Key
+        run: echo "Cache key: ${{ runner.os }}-composer-${{ hashFiles('src/composer.lock') }}" 
