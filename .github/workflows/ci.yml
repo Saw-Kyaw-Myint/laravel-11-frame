@@ -22,7 +22,7 @@ jobs:
     env:
       MEMORY_LIMIT: 5G
       PHPSTAN: vendor/bin/phpstan
-      LARAVELPINT: vendor/bin/pint        # <--- ဒီမှာ constant variable declare လုပ်လိုက်တာပါ
+      LARAVELPINT: vendor/bin/pint
     steps:
       - name: Setup PHP Environment
         uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
@@ -39,7 +39,7 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('src/composer.lock') }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/src/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
 
