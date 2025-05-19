@@ -4,9 +4,17 @@ on:
   push:
     branches:
       - 'feat/**'
+      - 'fix/**'
+      - 'refactor/**'
+      - 'improvement/**'
+      - 'hotfix/**'
   pull_request:
     branches:
       - 'feat/**'
+      - 'fix/**'
+      - 'refactor/**'
+      - 'improvement/**'
+      - 'hotfix/**'
 
 jobs:
   code_quality:
@@ -35,7 +43,7 @@ jobs:
       - name: Run Larastan
         id: run_larastan
         run: |
-
+          cd src
           if ! php -d memory_limit=5G vendor/bin/phpstan analyse --no-progress app; then
             echo "❌ Larastan detected issues. Please run larastan before committing."
             exit 1
