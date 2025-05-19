@@ -61,7 +61,7 @@ jobs:
         id: run_larastan
         run: |
           cd src
-          if ! php -d memory_limit=${{ env.MEMORY_LIMIT || 5G }}  $PHPSTAN analyse --no-progress app; then
+          if ! php -d memory_limit=${MEMORY_LIMIT:-5G}  $PHPSTAN analyse --no-progress app; then
             echo "❌ Larastan detected issues. Please run larastan before committing."
             exit 1
           fi
