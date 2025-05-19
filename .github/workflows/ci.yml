@@ -46,12 +46,6 @@ jobs:
           cd src
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
-      - name: Save Composer dependencies cache
-        uses: actions/cache/save@v4
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('src/composer.lock') }}
-
       - name: Run Laravel Pint
         id: run_pint
         run: |
