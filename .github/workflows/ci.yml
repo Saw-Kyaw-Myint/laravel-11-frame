@@ -1,4 +1,4 @@
-name: Check Code Style
+name: Check Code
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - 'feat/**'
 
 jobs:
-  Format:
+  code_quality:
     runs-on: ubuntu-latest
     steps:
       - name: Setup PHP Environment
