@@ -3,10 +3,10 @@ name: Check Code Style
 on:
   push:
     branches:
-      - 'feature/**'
+      - 'feat/**'
   pull_request:
     branches:
-      - 'feature/**'
+      - 'feat/**'
 
 jobs:
   Format:
@@ -28,6 +28,13 @@ jobs:
         id: run_pint
         run: |
           if ! src/vendor/bin/pint --config src/pint.json --test; then
-            echo "Formatting failed. Please run Laravel Pint to fix the code style."
+            echo "❌ Formatting failed. Please run Laravel Pint to fix the code style."
+            exit 1
+          fi
+      - name: Run Larastan
+        id: run_larastan
+        run: |
+          if ! php -d memory_limit=5G vendor/bin/phpstan analyse --no-progress app; then
+            echo "❌ Larastan detected issues. Please run larastan before committing."
             exit 1
           fi
