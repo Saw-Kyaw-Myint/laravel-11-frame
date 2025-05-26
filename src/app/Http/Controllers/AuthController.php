@@ -24,7 +24,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => 200,
-            'messsage' => 'saw'
+            'messsage' => 'saw',
         ]);
     }
 }
